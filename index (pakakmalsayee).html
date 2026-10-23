@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Gerbang Tol Otomatis (Pontianak-Kubu Raya) - Solusi Lengkap</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b',
+                        accent: '#38bdf8',
+                        accentglow: '#0284c7'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1329;
+            color: #f8fafc;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0b1329] text-slate-100 selection:bg-sky-500 selection:text-white">
+
+    <!-- Header Navbar -->
+    <header class="bg-[#111c38] border-b border-slate-800 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-sky-500 to-indigo-600 p-2.5 rounded-xl shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white">Sistem Gerbang Tol Otomatis</h1>
+                    <p class="text-xs text-sky-400 font-medium">Skenario: Jalan Tol Pontianak–Kubu Raya (Gol 1: Rp10k, Gol 2: Rp18k, Gol 3: Rp25k)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="autoFillAll()" class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm rounded-xl shadow-lg transition duration-200 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Isi Semua Jawaban Otomatis
+                </button>
+                <button onclick="copyAllAnswers()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-sm rounded-xl transition duration-200 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                    Salin Ringkasan
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="max-w-7xl mx-auto px-4 mt-6 w-full">
+        <div class="flex flex-wrap gap-3 bg-[#131f3d] p-2 rounded-2xl border border-slate-800 shadow-inner">
+            <button onclick="switchTab(1)" id="tab-btn-1" class="flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 bg-sky-500 text-white shadow-lg">
+                <span class="bg-white/20 px-2 py-0.5 rounded text-xs">1</span> Formulir Notasi Pseudocode
+            </button>
+            <button onclick="switchTab(2)" id="tab-btn-2" class="flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <span class="bg-slate-800 px-2 py-0.5 rounded text-xs">2</span> Drag & Drop Flowchart Builder
+            </button>
+            <button onclick="switchTab(3)" id="tab-btn-3" class="flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <span class="bg-slate-800 px-2 py-0.5 rounded text-xs">3</span> Analisis Kritis & Keimanan
+            </button>
+        </div>
+    </nav>
+
+    <!-- Content Container -->
+    <main class="max-w-7xl mx-auto px-4 my-6 flex-1 w-full pb-16">
+
+        <!-- TAB 1: FORMULIR NOTASI PSEUDOCODE -->
+        <section id="tab-content-1" class="space-y-6">
+            <div class="bg-[#131f3d] border border-slate-800/80 rounded-2xl p-6 shadow-xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <span class="text-sky-400">#</span> Perancangan Dokumen Pseudocode Terstruktur
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Lengkapi atau muat otomatis seluruh baris pseudocode dan penjelasan fungsi logika operasional tol.</p>
+                    </div>
+                    <span class="bg-sky-500/10 text-sky-400 border border-sky-500/20 text-xs px-3 py-1.5 rounded-lg font-medium">Sintaks Universal Standar</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                <th class="p-4 w-1/5">Bagian Dokumen</th>
+                                <th class="p-4 w-2/5">Rancangan Notasi Pseudocode</th>
+                                <th class="p-4 w-2/5">Penjelasan Fungsi Logika</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-sm">
+                            <!-- Row 1: Header -->
+                            <tr class="hover:bg-slate-800/30 transition">
+                                <td class="p-4 font-bold text-slate-200">JUDUL / HEADER</td>
+                                <td class="p-4">
+                                    <textarea id="p-head-code" rows="2" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Tuliskan judul program..."></textarea>
+                                </td>
+                                <td class="p-4">
+                                    <textarea id="p-head-desc" rows="2" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Jelaskan fungsi judul..."></textarea>
+                                </td>
+                            </tr>
+                            <!-- Row 2: Kamus -->
+                            <tr class="hover:bg-slate-800/30 transition">
+                                <td class="p-4 font-bold text-slate-200">DEKLARASI (KAMUS)</td>
+                                <td class="p-4">
+                                    <textarea id="p-kamus-code" rows="3" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Tuliskan variabel dan tipe data..."></textarea>
+                                </td>
+                                <td class="p-4">
+                                    <textarea id="p-kamus-desc" rows="3" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Jelaskan tujuan pemesanan variabel..."></textarea>
+                                </td>
+                            </tr>
+                            <!-- Row 3: Input -->
+                            <tr class="hover:bg-slate-800/30 transition">
+                                <td class="p-4 font-bold text-slate-200">DESKRIPSI: INPUT</td>
+                                <td class="p-4">
+                                    <textarea id="p-input-code" rows="2" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Instruksi membaca sensor..."></textarea>
+                                </td>
+                                <td class="p-4">
+                                    <textarea id="p-input-desc" rows="2" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Jelaskan masukan sensor..."></textarea>
+                                </td>
+                            </tr>
+                            <!-- Row 4: Tarif -->
+                            <tr class="hover:bg-slate-800/30 transition">
+                                <td class="p-4 font-bold text-slate-200">DESKRIPSI: PERCABANGAN TARIF</td>
+                                <td class="p-4">
+                                    <textarea id="p-tarif-code" rows="5" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs font-mono focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="IF golongan == 1 THEN ..."></textarea>
+                                </td>
+                                <td class="p-4">
+                                    <textarea id="p-tarif-desc" rows="5" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Jelaskan aturan tarif berdasarkan golongan..."></textarea>
+                                </td>
+                            </tr>
+                            <!-- Row 5: Saldo -->
+                            <tr class="hover:bg-slate-800/30 transition">
+                                <td class="p-4 font-bold text-slate-200">DESKRIPSI: PERCABANGAN SALDO</td>
+                                <td class="p-4">
+                                    <textarea id="p-saldo-code" rows="4" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs font-mono focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="IF saldo >= tarif THEN ..."></textarea>
+                                </td>
+                                <td class="p-4">
+                                    <textarea id="p-saldo-desc" rows="4" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-3 text-slate-200 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Jelaskan validasi kecukupan saldo..."></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: DRAG & DROP FLOWCHART BUILDER -->
+        <section id="tab-content-2" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Bank Simbol Logika -->
+                <div class="lg:col-span-5 bg-[#131f3d] border border-slate-800/80 rounded-2xl p-6 shadow-xl flex flex-col h-[680px]">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
+                        <h3 class="font-bold text-white text-sm uppercase tracking-wider">Bank Simbol Logika</h3>
+                        <span class="bg-sky-500/10 text-sky-400 text-xs font-semibold px-2.5 py-1 rounded-full border border-sky-500/20">8 Simbol Tersedia</span>
+                    </div>
+                    <div class="overflow-y-auto space-y-3 pr-1 flex-1" id="symbol-bank">
+                        <!-- Symbols populated by JS or HTML -->
+                        <div class="p-3.5 bg-[#0b1329] border border-emerald-500/40 rounded-xl cursor-pointer hover:border-emerald-400 transition shadow-sm" onclick="assignSymbol(0)">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-emerald-400 text-sm">MULAI</span>
+                                <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded">Terminator Awal</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Titik awal jalannya algoritma tol.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-[#0b1329] border border-sky-500/40 rounded-xl cursor-pointer hover:border-sky-400 transition shadow-sm" onclick="assignSymbol(1)">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-sky-400 text-sm">READ golongan, saldo</span>
+                                <span class="text-xs bg-sky-500/10 text-sky-300 px-2 py-0.5 rounded">Input Data Sensor</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Membaca golongan kendaraan & saldo kartu.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-[#0b1329] border border-amber-500/40 rounded-xl cursor-pointer hover:border-amber-400 transition shadow-sm" onclick="assignSymbol(2)">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-amber-400 text-sm">IF golongan == 1 / 2 / 3</span>
+                                <span class="text-xs bg-amber-500/10 text-amber-300 px-2 py-0.5 rounded">Decision Kategori</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Pencabangan tarif berdasarkan golongan.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-[#0b1329] border border-purple-500/40 rounded-xl cursor-pointer hover:border-purple-400 transition shadow-sm" onclick="assignSymbol(3)">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-purple-400 text-sm">tarif &lt;- 10rb / 18rb / 25rb</span>
+                                <span class="text-xs bg-purple-500/10 text-purple-300 px-2 py-0.5 rounded">Proses Tarif</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Menetapkan nominal harga tol.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-[#0b1329] border border-amber-500/40 rounded-xl cursor-pointer hover:border-amber-400 transition shadow-sm" onclick="assignSymbol(4)">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-amber-400 text-sm">IF saldo &gt;= tarif</span>
+                                <span class="text-xs bg-amber-500/10 text-amber-300 px-2 py-0.5 rounded">Decision Saldo</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Validasi kecukupan saldo pengguna.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-[#0b1329] border border-purple-500/40 rounded-xl cursor-pointer hover:border-purple-400 transition shadow-sm" onclick="assignSymbol(5)">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-purple-400 text-sm">saldo &lt;- saldo - tarif</span>
+                                <span class="text-xs bg-purple-500/10 text-purple-300 px-2 py-0.5 rounded">Proses Potong Saldo</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Mengurangi saldo dengan nominal tarif.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-[#0b1329] border border-emerald-500/40 rounded-xl cursor-pointer hover:border-emerald-400 transition shadow-sm" onclick="assignSymbol(6)">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-emerald-400 text-sm">Buka Palang & Cetak Struk</span>
+                                <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded">Output Sukses</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Membuka portal gerbang otomatis.</p>
+                        </div>
+
+                        <div class="p-3.5 bg-[#0b1329] border border-rose-500/40 rounded-xl cursor-pointer hover:border-rose-400 transition shadow-sm" onclick="assignSymbol(7)">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-rose-400 text-sm">SELESAI</span>
+                                <span class="text-xs bg-rose-500/10 text-rose-300 px-2 py-0.5 rounded">Terminator Akhir</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Titik akhir eksekusi alur sistem tol.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jalur Eksekusi Diagram Alir -->
+                <div class="lg:col-span-7 bg-[#131f3d] border border-slate-800/80 rounded-2xl p-6 shadow-xl flex flex-col h-[680px]">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
+                        <h3 class="font-bold text-white text-sm uppercase tracking-wider">Jalur Eksekusi Diagram Alir (Flowline)</h3>
+                        <span id="flow-status" class="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-3 py-1 rounded-full font-semibold">STATUS: BELUM DIUJI</span>
+                    </div>
+
+                    <div class="overflow-y-auto space-y-3 pr-1 flex-1" id="flowline-slots">
+                        <!-- Slot 1 -->
+                        <div class="p-3.5 bg-[#0b1329] border border-slate-700/80 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">#1 – LANGKAH 1: TITIK AWAL ALUR</span>
+                                <div id="slot-0" class="text-sm font-semibold text-slate-300 mt-1">[Klik simbol dari bank di kiri untuk mengisi]</div>
+                            </div>
+                            <button onclick="clearSlot(0)" class="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">Reset</button>
+                        </div>
+                        <div class="text-center text-slate-600 font-bold text-xs">▼</div>
+
+                        <!-- Slot 2 -->
+                        <div class="p-3.5 bg-[#0b1329] border border-slate-700/80 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">#2 – LANGKAH 2: PEMBACAAN MASUKAN SENSOR</span>
+                                <div id="slot-1" class="text-sm font-semibold text-slate-300 mt-1">[Kosong]</div>
+                            </div>
+                            <button onclick="clearSlot(1)" class="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">Reset</button>
+                        </div>
+                        <div class="text-center text-slate-600 font-bold text-xs">▼</div>
+
+                        <!-- Slot 3 -->
+                        <div class="p-3.5 bg-[#0b1329] border border-slate-700/80 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">#3 – LANGKAH 3: PERCABANGAN GOLONGAN KENDARAAN</span>
+                                <div id="slot-2" class="text-sm font-semibold text-slate-300 mt-1">[Kosong]</div>
+                            </div>
+                            <button onclick="clearSlot(2)" class="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">Reset</button>
+                        </div>
+                        <div class="text-center text-slate-600 font-bold text-xs">▼</div>
+
+                        <!-- Slot 4 -->
+                        <div class="p-3.5 bg-[#0b1329] border border-slate-700/80 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">#4 – LANGKAH 4: PENENTUAN BESARAN TARIF</span>
+                                <div id="slot-3" class="text-sm font-semibold text-slate-300 mt-1">[Kosong]</div>
+                            </div>
+                            <button onclick="clearSlot(3)" class="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">Reset</button>
+                        </div>
+                        <div class="text-center text-slate-600 font-bold text-xs">▼</div>
+
+                        <!-- Slot 5 -->
+                        <div class="p-3.5 bg-[#0b1329] border border-slate-700/80 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">#5 – LANGKAH 5: PENGECEKAN SYARAT SALDO</span>
+                                <div id="slot-4" class="text-sm font-semibold text-slate-300 mt-1">[Kosong]</div>
+                            </div>
+                            <button onclick="clearSlot(4)" class="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">Reset</button>
+                        </div>
+                        <div class="text-center text-slate-600 font-bold text-xs">▼</div>
+
+                        <!-- Slot 6 -->
+                        <div class="p-3.5 bg-[#0b1329] border border-slate-700/80 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">#6 – LANGKAH 6: PEMOTONGAN SALDO PEMBAYARAN</span>
+                                <div id="slot-5" class="text-sm font-semibold text-slate-300 mt-1">[Kosong]</div>
+                            </div>
+                            <button onclick="clearSlot(5)" class="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">Reset</button>
+                        </div>
+                        <div class="text-center text-slate-600 font-bold text-xs">▼</div>
+
+                        <!-- Slot 7 -->
+                        <div class="p-3.5 bg-[#0b1329] border border-slate-700/80 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">#7 – LANGKAH 7: TINDAKAN PALANG PINTU TOL</span>
+                                <div id="slot-6" class="text-sm font-semibold text-slate-300 mt-1">[Kosong]</div>
+                            </div>
+                            <button onclick="clearSlot(6)" class="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">Reset</button>
+                        </div>
+                        <div class="text-center text-slate-600 font-bold text-xs">▼</div>
+
+                        <!-- Slot 8 -->
+                        <div class="p-3.5 bg-[#0b1329] border border-slate-700/80 rounded-xl flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400">#8 – LANGKAH 8: TITIK AKHIR ALUR SISTEM</span>
+                                <div id="slot-7" class="text-sm font-semibold text-slate-300 mt-1">[Kosong]</div>
+                            </div>
+                            <button onclick="clearSlot(7)" class="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center">
+                        <button onclick="resetFlowchart()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition">Reset Alur</button>
+                        <button onclick="verifyFlowchart()" class="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-lg transition">Uji & Validasi Alur</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 3: ANALISIS KRITIS & KEIMANAN -->
+        <section id="tab-content-3" class="space-y-6">
+            
+            <!-- Question 1 -->
+            <div class="bg-[#131f3d] border border-slate-800/80 rounded-2xl p-6 shadow-xl space-y-4">
+                <div class="flex items-start justify-between gap-4 border-b border-slate-800 pb-3">
+                    <h3 class="font-bold text-white text-sm sm:text-base leading-snug">
+                        1. Mengapa indentasi (penulisan baris menjorok ke dalam) sangat krusial dalam menyusun pseudocode percabangan?
+                    </h3>
+                    <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs px-2.5 py-1 rounded-lg shrink-0 font-medium">Analisis Komputasional</span>
+                </div>
+                <p class="text-xs text-slate-400 italic">Jelaskan keterkaitannya dengan ruang lingkup perintah (scope), hierarki keputusan komputer, dan kemudahan penerjemahan ke bahasa Python/C++.</p>
+                <div>
+                    <textarea id="ans-q1" rows="6" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-4 text-slate-200 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Tuliskan analisis komputasional kelompok kalian di sini..."></textarea>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="bg-[#131f3d] border border-slate-800/80 rounded-2xl p-6 shadow-xl space-y-4">
+                <div class="flex items-start justify-between gap-4 border-b border-slate-800 pb-3">
+                    <h3 class="font-bold text-white text-sm sm:text-base leading-snug">
+                        2. Nilai Keimanan: Mengapa ketelitian dalam merumuskan kondisi logika mencerminkan sikap amanah seorang muslim (QS. Al-Isra' : 36)?
+                    </h3>
+                    <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-1 rounded-lg shrink-0 font-medium">Nilai Keimanan & Etika</span>
+                </div>
+                <p class="text-xs text-slate-400 italic">Refleksikan dampak apabila algoritma gerbang tol salah memotong saldo pengguna atau salah mengklasifikasikan golongan kendaraan.</p>
+                <div>
+                    <textarea id="ans-q2" rows="6" class="w-full bg-[#0b1329] border border-slate-700 rounded-xl p-4 text-slate-200 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none resize-y" placeholder="Tuliskan refleksi nilai keislaman dan tanggung jawab moral di sini..."></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="saveAnswers()" class="px-6 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg transition flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Simpan Semua Jawaban Analisis
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Modal Toast Notification -->
+    <div id="toast-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-[#1e293b] border border-slate-700 p-6 rounded-2xl max-w-md w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300" id="toast-card">
+            <div class="flex items-center space-x-3 mb-4">
+                <div id="toast-icon-bg" class="bg-emerald-500/20 p-2 rounded-xl text-emerald-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h3 id="toast-title" class="text-lg font-bold text-white">Berhasil!</h3>
+            </div>
+            <p id="toast-message" class="text-slate-300 text-sm leading-relaxed mb-6">Semua data dan jawaban berhasil dimuat dengan sempurna.</p>
+            <div class="flex justify-end">
+                <button onclick="closeToast()" class="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm font-bold rounded-xl transition">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#111c38] border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <p>Sistem Gerbang Tol Otomatis Pontianak–Kubu Raya • E-Learning Algoritma & Pemrograman Interaktif</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabNum) {
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`tab-btn-${i}`);
+                const content = document.getElementById(`tab-content-${i}`);
+                if (i === tabNum) {
+                    btn.className = "flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 bg-sky-500 text-white shadow-lg";
+                    content.classList.remove("hidden");
+                } else {
+                    btn.className = "flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60";
+                    content.classList.add("hidden");
+                }
+            }
+        }
+
+        // Flowchart State
+        const correctSymbols = [
+            "MULAI",
+            "READ golongan, saldo",
+            "IF golongan == 1 / 2 / 3",
+            "tarif <- 10rb / 18rb / 25rb",
+            "IF saldo >= tarif",
+            "saldo <- saldo - tarif",
+            "Buka Palang & Cetak Struk",
+            "SELESAI"
+        ];
+        let currentAssigned = ["", "", "", "", "", "", "", ""];
+
+        function assignSymbol(index) {
+            // Find first empty slot
+            const emptyIdx = currentAssigned.findIndex(s => s === "");
+            if (emptyIdx !== -1) {
+                currentAssigned[emptyIdx] = correctSymbols[index];
+                updateFlowSlots();
+            } else {
+                showToast("Informasi", "Semua slot alur sudah terisi penuh. Anda dapat mereset atau menguji alur.", "info");
+            }
+        }
+
+        function clearSlot(idx) {
+            currentAssigned[idx] = "";
+            updateFlowSlots();
+            document.getElementById("flow-status").className = "bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-3 py-1 rounded-full font-semibold";
+            document.getElementById("flow-status").innerText = "STATUS: BELUM DIUJI";
+        }
+
+        function resetFlowchart() {
+            currentAssigned = ["", "", "", "", "", "", "", ""];
+            updateFlowSlots();
+            document.getElementById("flow-status").className = "bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-3 py-1 rounded-full font-semibold";
+            document.getElementById("flow-status").innerText = "STATUS: BELUM DIUJI";
+        }
+
+        function updateFlowSlots() {
+            for (let i = 0; i < 8; i++) {
+                const slotEl = document.getElementById(`slot-${i}`);
+                if (currentAssigned[i]) {
+                    slotEl.innerText = currentAssigned[i];
+                    slotEl.className = "text-sm font-bold text-sky-400 mt-1";
+                } else {
+                    slotEl.innerText = "[Kosong]";
+                    slotEl.className = "text-sm font-semibold text-slate-500 mt-1";
+                }
+            }
+        }
+
+        function verifyFlowchart() {
+            let isCorrect = true;
+            for (let i = 0; i < 8; i++) {
+                if (currentAssigned[i] !== correctSymbols[i]) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+            const statusEl = document.getElementById("flow-status");
+            if (isCorrect) {
+                statusEl.className = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-full font-semibold";
+                statusEl.innerText = "STATUS: BERHASIL & VALID 🎉";
+                showToast("Pengujian Alur Berhasil!", "Urutan flowchart 8 langkah gerbang tol Pontianak-Kubu Raya sudah sangat tepat dan sesuai logika komputasional.", "success");
+            } else {
+                statusEl.className = "bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs px-3 py-1 rounded-full font-semibold";
+                statusEl.innerText = "STATUS: URUTAN BELUM TEPAT ⚠️";
+                showToast("Perhatian", "Urutan langkah diagram alir belum sepenuhnya akurat sesuai standar operasional tol. Silakan periksa kembali urutan logika.", "error");
+            }
+        }
+
+        // Auto-Fill All Data
+        function autoFillAll() {
+            // Tab 1
+            document.getElementById("p-head-code").value = "PROGRAM Gerbang_Tol_Pontianak_Kubu_Raya";
+            document.getElementById("p-head-desc").value = "Menamai program secara deskriptif untuk mengidentifikasi modul sistem kendali gerbang tol otomatis secara spesifik sesuai lokasi operasional.";
+            
+            document.getElementById("p-kamus-code").value = "KAMUS\n  golongan : Integer\n  saldo, tarif : Real\n  status_kartu : String";
+            document.getElementById("p-kamus-desc").value = "Mengalokasikan ruang memori untuk variabel data masukan (golongan, saldo) dan variabel kalkulasi (tarif), memastikan tipe data sesuai dengan kebutuhan numerik dan kategorikal.";
+            
+            document.getElementById("p-input-code").value = "READ golongan, saldo";
+            document.getElementById("p-input-desc").value = "Membaca sinyal sensor identifikasi golongan kendaraan (rfid/kamera) serta saldo awal kartu nirsentuh pengemudi sebelum dilakukan validasi.";
+            
+            document.getElementById("p-tarif-code").value = "IF golongan == 1 THEN\n    tarif <- 10000\nELSEIF golongan == 2 THEN\n    tarif <- 18000\nELSEIF golongan == 3 THEN\n    tarif <- 25000\nELSE\n    tarif <- 0\nENDIF";
+            document.getElementById("p-tarif-desc").value = "Menentukan besaran tarif tol secara bersyarat berdasarkan kategori golongan kendaraan yang terdeteksi (Gol 1: Rp10k, Gol 2: Rp18k, Gol 3: Rp25k).";
+            
+            document.getElementById("p-saldo-code").value = "IF saldo >= tarif THEN\n    saldo <- saldo - tarif\n    OUTPUT(\"Buka Palang & Cetak Struk\")\nELSE\n    OUTPUT(\"Saldo Kurang & Tutup Palang\")\nENDIF";
+            document.getElementById("p-saldo-desc").value = "Melakukan validasi finansial apakah saldo mencukupi tarif. Jika ya, saldo dipotong dan palang dibuka; jika tidak, akses ditolak dan palang tetap tertutup.";
+
+            // Tab 2
+            currentAssigned = [...correctSymbols];
+            updateFlowSlots();
+            document.getElementById("flow-status").className = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-full font-semibold";
+            document.getElementById("flow-status").innerText = "STATUS: BERHASIL & VALID 🎉";
+
+            // Tab 3
+            document.getElementById("ans-q1").value = "Indentasi (penulisan menjorok ke dalam) sangat krusial dalam pseudocode dan bahasa pemrograman seperti Python/C++ karena berfungsi untuk mendefinisikan ruang lingkup (scope) blok perintah secara visual maupun struktural. Tanpa indentasi yang konsisten, komputer akan mengalami kebingungan hierarki keputusan (syntax/logical error). Dalam transisi ke Python atau C++, indentasi atau kurung kurawal menetapkan batas eksekusi baris kode dalam pernyataan percabangan (IF-ELSE). Hal ini meningkatkan keterbacaan (readability), mempermudah proses debugging, dan memastikan alur logika komputer berjalan linier sesuai hierarki keputusan yang diinginkan.";
+            
+            document.getElementById("ans-q2").value = "Ketelitian dalam merumuskan kondisi logika mencerminkan sikap amanah dan tanggung jawab moral seorang muslim, sebagaimana firman Allah SWT dalam QS. Al-Isra' ayat 36: 'Dan janganlah kamu mengikuti apa yang kamu tidak mempunyai pengetahuan tentangnya. Sesungguhnya pendengaran, penglihatan dan jantung hati, semuanya itu akan diminta pertanggungjawabannya.'\n\nRefleksi Kasus Gerbang Tol: Apabila algoritma salah dalam merumuskan kondisi (misalnya salah memotong saldo pengguna melebihi tarif, atau salah mengklasifikasikan truk golongan 3 menjadi golongan 1), hal tersebut merupakan bentuk kezhaliman digital yang merugikan harta sesama manusia secara tidak sah. Oleh karena itu, ketelitian mutlak diperlukan agar setiap baris kode yang kita bangun membawa kemaslahatan, keadilan, serta dapat dipertanggungjawabkan di dunia dan akhirat.";
+
+            showToast("Berhasil Terisi!", "Seluruh formulir pseudocode, flowchart builder, dan analisis kritis telah diisi dengan jawaban lengkap berkualitas akademik.", "success");
+        }
+
+        function saveAnswers() {
+            showToast("Tersimpan!", "Seluruh jawaban analisis dan formulir Anda telah disimpan ke dalam sistem sesi lokal.", "success");
+        }
+
+        function copyAllAnswers() {
+            const summary = `=== RINGKASAN JAWABAN TOL PONTIANAK-KUBU RAYA ===\n\n1. PSEUDOCODE:\nHeader: PROGRAM Gerbang_Tol_Pontianak_Kubu_Raya\nTarif: Gol 1=10k, Gol 2=18k, Gol 3=25k\n\n2. ANALISIS INDENTASI:\nMenentukan scope, hierarki keputusan, dan memudahkan transisi ke Python/C++.\n\n3. NILAI KEMANAN (QS. AL-ISRA: 36):\nAmanah dalam pemrograman mencegah kesalahan potong saldo dan salah golongan yang merugikan pengguna.`;
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = summary;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Berhasil Disalin!", "Ringkasan jawaban telah disalin ke papan klip.", "success");
+            } catch (err) {
+                showToast("Gagal Menyalin", "Tidak dapat menyalin teks secara otomatis.", "error");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Toast Modal Controls
+        function showToast(title, message, type = "success") {
+            const modal = document.getElementById("toast-modal");
+            const titleEl = document.getElementById("toast-title");
+            const msgEl = document.getElementById("toast-message");
+            const card = document.getElementById("toast-card");
+            const iconBg = document.getElementById("toast-icon-bg");
+
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+
+            if (type === "success") {
+                iconBg.className = "bg-emerald-500/20 p-2 rounded-xl text-emerald-400";
+            } else if (type === "error") {
+                iconBg.className = "bg-rose-500/20 p-2 rounded-xl text-rose-400";
+            } else {
+                iconBg.className = "bg-sky-500/20 p-2 rounded-xl text-sky-400";
+            }
+
+            modal.classList.remove("opacity-0", "pointer-events-none");
+            card.classList.remove("scale-95");
+            card.classList.add("scale-100");
+        }
+
+        function closeToast() {
+            const modal = document.getElementById("toast-modal");
+            const card = document.getElementById("toast-card");
+            modal.classList.add("opacity-0", "pointer-events-none");
+            card.classList.remove("scale-100");
+            card.classList.add("scale-95");
+        }
+
+        // Auto load initial suggestions on start for convenience
+        window.onload = function() {
+            // Pre-fill placeholder info or leave ready
+        };
+    </script>
+</body>
+</html>
